@@ -1,8 +1,21 @@
 
 from .app import app
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from .models import User
+from wtforms import StringField, PasswordField
+from wtforms.validators import InputRequired, Email, Length
+from flask_wtf import FlaskForm
 
-#URL mapping
+
+
+class UserRegistrationForm(FlaskForm):
+    username= StringField("Username", validators=[InputRequired(), Length(min=6, max=20)])
+    firstname= StringField("Firstname",validators=[InputRequired()])
+    lastname= StringField("Lastname",validators=[InputRequired()])
+    password= PasswordField("Password", validators=[InputRequired(), Length(min=6, max=12)])
+
+
 @app.route("/",methods=["GET","POST"])
 def index():
     user = "Takahiro Hoshino"
@@ -45,3 +58,25 @@ def teacher():
         {"id":4, "name":"Ayaka Ishikawa", "address": "Tokyo", "status":"Active"}
     ]
     return render_template("teacher/teacher.html", teachers=teachers)
+
+@app.route("/users")
+def list_users():
+    # get all the users from the database ordered by id
+    users = User.query.order_by(User.id.desc()).all
+    return render_template("user/index.html", users=users)
+
+@app.route("/user/create", methods=["GET", "POST"])
+def add_user():
+    form = UserRegistrationForm()
+
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method="sha256")
+        new_user = User(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data, password=form.password.data)
+
+        db.session.add(new_user)
+        db.session.commit()
+        flash("New User added successfully.")
+
+        return redirect(url_for("list_users"))
+
+    return render_template("user/create.html", form=form)

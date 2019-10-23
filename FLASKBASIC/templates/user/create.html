@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block main %}
+
+<div class="card">
+    <div class="card-body">
+        <h3>Create a new User!</h3>
+        <form method="POST" action="/user/create">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username)}}
+            {{ wtf.form_field(form.password)}}
+            {{ wtf.form_field(form.firstname)}}
+            {{ wtf.form_field(form.lastname)}}
+            <button type="submit" class= "btn btn-blcok btn-primary">ADD USER</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

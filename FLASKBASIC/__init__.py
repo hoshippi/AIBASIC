@@ -1,2 +1,3 @@
 from .app import app
-#from . import views
+from .database import db
+from . import views

@@ -1,7 +1,7 @@
 #all the settings to connect to the database
 #database configuration
 
-#↓OSによってロケーション（ディレクトリの指定の仕方が違う）
+#↓OSによってロケーションを指定できるように（ディレクトリの指定の仕方がOSによって違う）
 import os
 
 from os.path import join,dirname
@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 dotenv_path = join(dirname(__file__),".env")
 
 
-class DebelopmentConfig:
+class DevelopmentConfig:
     #DEBUG = TRUE だと、エラーが起こった時にエラーを表示してくれる。プロダクションステイとだとこれをオフにして、ユーザーにはエラーを表示しない
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8".format(**{
@@ -25,5 +25,7 @@ class DebelopmentConfig:
     SQLALCHEMY_TRACK_MODIFICATION = False
     SQLALCHEMY_ECHO = False
 
+    SECRET_KEY = os.urandom(24)
+
 #instance or object ↓ 両方の呼び方がある
-Config = DebelopmentConfig
+Config = DevelopmentConfig
