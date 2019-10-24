@@ -17,8 +17,49 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
-    def __init(self,username,firstname,lastname,password):
+    def __init__(self,username,firstname,lastname,password):
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
         self.password = password
+
+    def __repr__(self):
+        return f"username: {self.username}"
+
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"
+
+
+class Student(db.Model):
+    __tablename__ = "students"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.String(45),nullable=False)
+    address = db.Column(db.String(100),nullable=False)
+    status = db.Column(db.Integer,nullable=False)
+    year = db.Column(db.Integer,nullable=False)
+
+
+    def __init__(self,name,address,status,year):
+        self.name = name
+        self.address = address
+        self.status = status
+        self.year = year
+
+
+class Teacher(db.Model):
+    __tablename__ = "teachers"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.String(20),nullable=False)
+    address = db.Column(db.String(80),nullable=False)
+    status = db.Column(db.Integer,nullable=False)
+    
+
+    def __init__(self,name,address,status):
+        self.name = name
+        self.address = address
+        self.status = status
+    

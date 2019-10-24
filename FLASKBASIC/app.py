@@ -9,7 +9,7 @@ from . import models
 
 def create_app():
     app = Flask(__name__)
-    Bootstrap(app) 
+    Bootstrap(app)
     init_db(app)
 
     app.config.from_object(Config)
